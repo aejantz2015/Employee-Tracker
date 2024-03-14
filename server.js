@@ -52,7 +52,7 @@ function menu() {
 // function to view departments
 function showDepartments() {
     console.log('Showing all departments...\n')
-    const sql = `SELECT id, department_name AS department FROM department`
+    const sql = `SELECT id, department_name AS Department FROM department`
 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -67,7 +67,7 @@ function showDepartments() {
 // function to view roles
 function showRoles() {
     console.log('Showing all postions...\n')
-    const sql = `SELECT id, title, salary, department_id AS department FROM roles`
+    const sql = `SELECT id, Title, Salary, department_id AS Department FROM roles`
 
     db.query(sql, (err, rows) => {
         if (err) {
@@ -82,9 +82,11 @@ function showRoles() {
 // function to view all employees
 function showEmployees() {
     console.log('Showing all employees...\n')
-    const sql = `SELECT e.id, e.first_name AS First, e.last_name AS Last, r.title AS Title, r.department_id AS Department, r.salary AS Salary, e.manager_id AS Manager
-                 FROM employee e
-                 JOIN roles r ON e.role_id = r.id`;
+    const sql = `SELECT e.id, e.first_name AS First, e.last_name AS Last, r.title AS Title, d.department_name AS Department, r.salary AS Salary, CONCAT(m.first_name, ' ', m.last_name) AS Manager
+    FROM employee e
+    JOIN roles r ON e.role_id = r.id
+    JOIN department d ON r.department_id = d.id
+    LEFT JOIN employee m ON e.manager_id = m.id`;
 
     db.query(sql, (err, rows) => {
         if (err) {

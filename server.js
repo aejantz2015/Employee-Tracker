@@ -165,17 +165,17 @@ async function addEmployee() {
         },
         {
             type: 'input',
-            message: 'Who is the employees manager?',
-            name: 'manager_id'
+            message: 'What is the salary for this employee',
+            name: 'salary'
         },
         {
             type: 'input',
-            message: 'What is the employees salary',
-            name: 'salary'
-        },
+            message: 'Who is the employees manager?',
+            name: 'manager_id'
+        }
     ])
-    let sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id, salary) VALUES (?, ?, ?, ?)`
-    let params = [res.first_name, res.last_name, res.postion_id, res.managr_id];
+    let sql = `INSERT INTO employee (first_name, last_name, role_id, salary, manager_id) VALUES (?, ?, ?, ?, ?)`
+    let params = [res.first_name, res.last_name, res.role_id, res.salary, res.manager_id];
     console.log(params)
 
     db.query(sql, params, (err,rows) => {

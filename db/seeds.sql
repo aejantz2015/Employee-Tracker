@@ -15,4 +15,7 @@ INSERT INTO position (title, department_id, salary)
 ('Lawyer', 4, 200000)
 ('Paralegal', 4, 100000)
 
+INSERT INTO manager (first_name, last_name, position_id)
+
+
 INSERT INTO employee (first_name, last_name, position_id, manager_id)

@@ -1,13 +1,19 @@
 {
   "name": "employee-tracker",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "This will help employers keep track of employees in different departments and positions.",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
+  "keywords": [],
+  "author": "Anna Jantzen",
+  "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "inquirer": "^8.2.4",
-    "mysql2": "^3.9.2"
+    "mysql2": "^3.9.2",
+    "sequelize": "^6.37.1"
   }
 }

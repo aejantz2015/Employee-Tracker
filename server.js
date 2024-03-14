@@ -18,7 +18,6 @@ function menu() {
         choices: ['View all departments',
                   'View all roles',
                   'View all employees',
-                  'View employees by the departments',
                   'Add a department',
                   'Add a role',
                   'Add an employee',

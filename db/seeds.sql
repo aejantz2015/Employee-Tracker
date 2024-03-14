@@ -20,10 +20,10 @@ VALUES
 
 INSERT INTO employee (first_name, last_name, role_id, salary)
 VALUES
-('Jane', 'Doe', 1, 150000),
+('Jane', 'Doe', 5, 150000),
 ('Jimmy', 'Fly', 1, 100000),
-('George', 'Washington', 1, 150000),
-('Harry', 'Potter', 1, 200000);
+('George', 'Washington', 3, 150000),
+('Harry', 'Potter', 7, 200000);
 
 INSERT INTO employee (first_name, last_name, role_id, salary, manager_id)
 VALUES

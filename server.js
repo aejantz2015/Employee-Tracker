@@ -82,7 +82,9 @@ function showRoles() {
 // function to view all employees
 function showEmployees() {
     console.log('Showing all employees...\n')
-    const sql = `SELECT id, first_name, last_name, role_id, salary, manager_id FROM employee`
+    const sql = `SELECT e.id, e.first_name AS First, e.last_name AS Last, r.title AS Title, r.department_id AS Department, r.salary AS Salary, e.manager_id AS Manager
+                 FROM employee e
+                 JOIN roles r ON e.role_id = r.id`;
 
     db.query(sql, (err, rows) => {
         if (err) {

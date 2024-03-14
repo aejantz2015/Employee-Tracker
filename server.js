@@ -1,9 +1,17 @@
 const inquirer = require('inquirer')
 const mysql = require('mysql2')
 
-const promptUser = () => {
-    inquirer.prompt ([
-        {
+const db = mysql.createConnection(
+    {
+        host: '127.0.0.1',
+        user: 'root',
+        password: 'Aej.178721',
+        database: 'employees_db'
+    }
+);
+
+function options() {
+    inquirer.prompt ({
         type: 'list',
         name: 'choices',
         message: 'Please choose from the following',
@@ -14,49 +22,190 @@ const promptUser = () => {
                   'Add a department',
                   'Add a role',
                   'Add an employee',
-                  'Update an employee manager',
-                  'Update an employees role',
-                  'Delete a role',
-                  'Delete an employee',
-                  'Delete a department']
-        }
-    ])
-    .then((answers) => {
-        const { choices } = answers
+                  'Update an employees role']
+    })
+    .then(res => {
 
-        if (choices === 'View all departments') {
+        if (res.action === 'View all departments') {
             showDepartments()
         }
-        if (choices === 'View all roles') {
+        if (res.action === 'View all roles') {
             showRoles()
         }
-        if (choices === 'View all employees') {
+        if (res.action === 'View all employees') {
             showEmployees()
         }
-        if (choices === 'View employees by the departments') {
+        if (res.action === 'View employees by the departments') {
             employeeDepartment()
         }
-        if (choices === 'Add a department') {
+        if (res.action === 'Add a department') {
             addDepartment()
         }
-        if (choices === 'Add a role') {
-            addRole()
+        if (res.action === 'Add a role') {
+            addPostion()
         }
-        if (choices === 'Add an employee') {
+        if (res.action === 'Add an employee') {
             addEmployee()
         }
-        if (choices === 'Update an employee manager') {
-            updateManager()
-        }
-        if (choices === 'Update an employees role') {
+        if (res.action === 'Update an employees role') {
             updateEmployee()
         }
-        if (choices === 'Delete a role') {
-            deleteRole()
+    });
+}
+// function to view departments
+function showDepartments() {
+    console.log('Showing all departments...\n')
+    const sql = `SELECT id, department_name AS department FROM department`
+
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err)
+            return;
         }
-        if (choices === 'Delete an employee') {
-            deleteEmployee()
+        console.table(rows)
+        options()
+    })
+};
+
+// function to view roles
+function showRoles() {
+    console.log('Showing all postions...\n')
+    const sql = `SELECT id, title, salary, department_id AS department FROM postion`
+
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err)
+            return;
         }
+        console.table(rows)
+        options()
+    })
+};
+
+// function to view all employees
+function showEmployees() {
+    console.log('Showing all employees...\n')
+    const sql = `SELECT id, first_name, last_name, postion_id FROM employee`
+
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err)
+            return;
+        }
+        console.table(rows)
+        options()
+    })
+};
+
+async function addDepartment() {
+    const res = await inquirer.prompt([ 
+        {
+        type: 'input',
+        message: 'What is the new department?',
+        name: 'newDepartment'
+        }
+    ])
+    let sql = `INSERT INTO department (department_name) VALUES (?)`
+    let params = [res.newDepartment];
+
+    db.query(sql, params, (err,rows) => {
+        if (err) {
+            console.long(err)
+            return;
+        };
+        console.log('Department added')
+        options()
+    })
+};
+
+async function addPostion() {
+    const res = await inquirer.prompt([ 
+        {
+            type: 'input',
+            message: 'What is the new role?',
+            name: 'title'
+        },
+        {
+            type: 'input',
+            message: 'What is the salary for this role?',
+            name: 'salary'
+        },
+        {
+            type: 'input',
+            message: 'What is the department id for this role?',
+            name: 'department_id'
+        }
+    ])
+    let sql = `INSERT INTO postion (title, salary, department_id) VALUES (?, ?, ?)`
+    let params = [res.title, res.salary, res.department_id];
+
+    db.query(sql, params, (err,rows) => {
+        if (err) {
+            console.long(err)
+            return;
+        };
+        console.log('Postion added')
+        options()
+    })
+};
+
+async function addEmployee() {
+    const res = await inquirer.prompt([ 
+        {
+        type: 'input',
+        message: 'What is the employees first name?',
+        name: 'first_name'
+        },
+        {
+            type: 'input',
+            message: 'What is the employees last name?',
+            name: 'last_name'
+        },
+        {
+            type: 'input',
+            message: 'What is their role id?',
+            name: 'role_id'
+        },
+        {
+            type: 'input',
+            message: 'Who is the employees manager?',
+            name: 'manager_id'
+        },
+        {
+            type: 'input',
+            message: 'What is the employees salary',
+            name: 'salary'
+        },
+    ])
+    let sql = `INSERT INTO employee (first_name, last_name, postion_id, manager_id) VALUES (?, ?, ?, ?)`
+    let params = [res.first_name, res.last_name, res.postion_id, res.managr_id];
+    console.log(parmas)
+
+    db.query(sql, params, (err,rows) => {
+        if (err) {
+            console.long(err)
+            return;
+        };
+        console.log('New employee has been added')
+        options()
+    })
+};
+
+async function updateEmployee() {
+    db.query('SELECT * FROM employee', async (err, employee) => {
+        if (err) {
+            console.log(err)
+            return;
+        }
+        const updateEmployee = await inquirer.promot ([
+            {
+                type: 'list',
+                message: 'Please select the employee you would like to update',
+                choices: employee.map((e) => ({name: `${e.first_name} ${e.last_name}`, value: e.id})),
+                name: 'postion_id'
+            }
+        ])
     })
 }
 
+options()

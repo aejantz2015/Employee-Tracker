@@ -198,15 +198,41 @@ async function updateEmployee() {
             console.log(err)
             return;
         };
-        const updateEmployee = await inquirer.promot ([
+        const updatedEmployee = await inquirer.prompt ([
             {
                 type: 'list',
                 message: 'Please select the employee you would like to update',
                 choices: employee.map((e) => ({name: `${e.first_name} ${e.last_name}`, value: e.id})),
-                name: 'postion_id'
+                name: 'employee_id'
             }
-        ])
-    })
+        ]);
+
+        db.query('SELECT * FROM roles', async (err, roles) => { 
+            if (err) {
+            console.log(err)
+            return;
+        }
+        const updateRole = await inquirer.prompt ([
+            {
+                type: 'list',
+                message: 'Please select a new role for this employee',
+                choices: roles.map((r) => ({name: r.title, value: r.id})),
+                name: 'role_id'
+            }
+        ]);
+        db.query('UPDATE employee SET role_id = ? WHERE id = ?',
+        [updateRole.role_id, updatedEmployee.employee_id], 
+        (err, result) => { 
+        if (err) {
+            console.log(err)
+            return;
+        }
+        console.log('Employee log updated!')
+        menu();
+        });
+    });
+});
+
 }
 
 menu()

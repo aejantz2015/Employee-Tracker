@@ -1,15 +1,15 @@
-USE employee_db
+USE employee_db;
 
-INSERT INTO department (name)
+INSERT INTO department (department_name)
 VALUES
 ('Sales'),
 ('Finance'),
 ('Engineering'),
 ('Legal');
 
-INSERT INTO position (title, department_id, salary)
+INSERT INTO roles (title, department_id, salary)
 VALUES
-('Sales Lead', 1 100000),
+('Sales Lead', 1, 100000),
 ('Salesperson', 1, 80000),
 ('Account Manager', 2, 150000),
 ('Accountant', 2, 100000),
@@ -18,14 +18,14 @@ VALUES
 ('Lawyer', 4, 200000),
 ('Paralegal', 4, 100000);
 
-INSERT INTO employee (first_name, last_name, position_id, salary)
+INSERT INTO employee (first_name, last_name, role_id, salary)
 VALUES
 ('Jane', 'Doe', 1, 150000),
 ('Jimmy', 'Fly', 1, 100000),
 ('George', 'Washington', 1, 150000),
 ('Harry', 'Potter', 1, 200000);
 
-INSERT INTO employee (first_name, last_name, position_id, salary, manager_id)
+INSERT INTO employee (first_name, last_name, role_id, salary, manager_id)
 VALUES
 ('Lucy', 'Bach', 6, 120000, 1),
 ('Jake', 'Peratla', 2, 80000, 2),

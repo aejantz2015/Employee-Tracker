@@ -10,10 +10,10 @@ const db = mysql.createConnection(
     }
 );
 
-function options() {
+function menu() {
     inquirer.prompt ({
         type: 'list',
-        name: 'choices',
+        name: 'action',
         message: 'Please choose from the following',
         choices: ['View all departments',
                   'View all roles',
@@ -22,34 +22,31 @@ function options() {
                   'Add a department',
                   'Add a role',
                   'Add an employee',
-                  'Update an employees role']
+                  'Update an employees role'],
     })
     .then(res => {
 
         if (res.action === 'View all departments') {
             showDepartments()
-        }
+        };
         if (res.action === 'View all roles') {
             showRoles()
-        }
+        };
         if (res.action === 'View all employees') {
             showEmployees()
-        }
-        if (res.action === 'View employees by the departments') {
-            employeeDepartment()
-        }
+        };
         if (res.action === 'Add a department') {
             addDepartment()
-        }
+        };
         if (res.action === 'Add a role') {
             addPostion()
-        }
+        };
         if (res.action === 'Add an employee') {
             addEmployee()
-        }
+        };
         if (res.action === 'Update an employees role') {
             updateEmployee()
-        }
+        };
     });
 }
 // function to view departments
@@ -61,39 +58,39 @@ function showDepartments() {
         if (err) {
             console.log(err)
             return;
-        }
+        };
         console.table(rows)
-        options()
+        menu();
     })
 };
 
 // function to view roles
 function showRoles() {
     console.log('Showing all postions...\n')
-    const sql = `SELECT id, title, salary, department_id AS department FROM postion`
+    const sql = `SELECT id, title, salary, department_id AS department FROM roles`
 
     db.query(sql, (err, rows) => {
         if (err) {
             console.log(err)
             return;
-        }
+        };
         console.table(rows)
-        options()
+        menu();
     })
 };
 
 // function to view all employees
 function showEmployees() {
     console.log('Showing all employees...\n')
-    const sql = `SELECT id, first_name, last_name, postion_id FROM employee`
+    const sql = `SELECT id, first_name, last_name, role_id, salary, manager_id FROM employee`
 
     db.query(sql, (err, rows) => {
         if (err) {
             console.log(err)
             return;
-        }
+        };
         console.table(rows)
-        options()
+        menu();
     })
 };
 
@@ -114,7 +111,7 @@ async function addDepartment() {
             return;
         };
         console.log('Department added')
-        options()
+        menu();
     })
 };
 
@@ -136,7 +133,7 @@ async function addPostion() {
             name: 'department_id'
         }
     ])
-    let sql = `INSERT INTO postion (title, salary, department_id) VALUES (?, ?, ?)`
+    let sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`
     let params = [res.title, res.salary, res.department_id];
 
     db.query(sql, params, (err,rows) => {
@@ -145,7 +142,7 @@ async function addPostion() {
             return;
         };
         console.log('Postion added')
-        options()
+        menu();
     })
 };
 
@@ -177,17 +174,17 @@ async function addEmployee() {
             name: 'salary'
         },
     ])
-    let sql = `INSERT INTO employee (first_name, last_name, postion_id, manager_id) VALUES (?, ?, ?, ?)`
+    let sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id, salary) VALUES (?, ?, ?, ?)`
     let params = [res.first_name, res.last_name, res.postion_id, res.managr_id];
-    console.log(parmas)
+    console.log(params)
 
     db.query(sql, params, (err,rows) => {
         if (err) {
-            console.long(err)
+            console.log(err)
             return;
         };
         console.log('New employee has been added')
-        options()
+        menu();
     })
 };
 
@@ -196,7 +193,7 @@ async function updateEmployee() {
         if (err) {
             console.log(err)
             return;
-        }
+        };
         const updateEmployee = await inquirer.promot ([
             {
                 type: 'list',
@@ -208,4 +205,4 @@ async function updateEmployee() {
     })
 }
 
-options()
+menu()

@@ -141,7 +141,7 @@ async function addPostion() {
 
     db.query(sql, params, (err,rows) => {
         if (err) {
-            console.long(err)
+            console.log(err)
             return;
         };
         console.log('Postion added')

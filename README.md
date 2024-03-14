@@ -16,8 +16,8 @@
     mysql2
 
   ## Usage
-  Here is a link to the GitHub repository:
-  Here is a link to a video walkthrough:
+  Here is a link to the GitHub repository: [https://github.com/aejantz2015/Employee-Tracker]
+  Here is a link to a video walkthrough: [https://drive.google.com/file/d/1llIPfpVyBtiYHuV79Z_ddMOfEju0DqAv/view]
 
   ![Screenshot](./assets/Screenshot.png)
   ![Screenshot](./assets/Screenshot1.png)

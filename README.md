@@ -55,4 +55,5 @@ SOFTWARE.
   N/A
 
   ## Contact
-  [aejantz2015@gmail.com]
+  Email: [aejantz2015@gmail.com]
+  GitHub: [https://github.com/aejantz2015]
